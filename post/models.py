@@ -63,6 +63,7 @@ class Like(models.Model):
         db_column='POST',
         on_delete=models.CASCADE
     )
+    date = models.DateTimeField(db_column='DATE', auto_now_add=True)
 
     class Meta:
         db_table = 'like'

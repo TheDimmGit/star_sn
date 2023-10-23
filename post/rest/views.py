@@ -2,8 +2,9 @@ from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.decorators import action
 
-from post.models import Post
+from post.models import Post, Like
 from post.rest.serializers import PostSerializer
 
 
@@ -76,3 +77,15 @@ class PostView(GenericViewSet):
         response_serializer = self.get_response_serializer(instance)
 
         return Response(response_serializer.data, status=status.HTTP_201_CREATED)
+
+    @action(methods=['get'], url_path='like', detail=True)
+    def like_post(self, request, *args, **kwargs):
+        post = self.get_object()
+        user = request.user.id
+        like = Like.objects.filter(post=post, author=user)
+        if like.exists():
+            like.first().delete()
+        else:
+            Like.objects.create(post=post, author_id=user)
+
+        return Response(status=status.HTTP_200_OK)
