@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from post.models import Post, Like
+from post.models import Post
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -20,15 +20,3 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ('id', 'self', 'author', 'title', 'content', 'date', 'likes_count')
-
-
-# class LikeSerializer(serializers.ModelSerializer):
-#
-#     post = PostSerializer()
-#
-#     def create(self, validated_data):
-#
-#
-#     class Meta:
-#         model = Like
-#         fields = '__all__'

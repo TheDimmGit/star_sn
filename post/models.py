@@ -1,4 +1,5 @@
 from django.db import models
+
 from user.models import User
 
 
@@ -25,30 +26,30 @@ class Post(models.Model):
         db_table = 'post'
 
 
-class Tag(models.Model):
-    id = models.AutoField(db_column='ID', primary_key=True)
-    name = models.CharField(db_column='NAME', max_length=255)
-
-    @property
-    def all_tag_posts(self) -> models.QuerySet:
-        return Post.objects.filter(posttagrelations__tag=self)
-
-    @staticmethod
-    def all_tags_posts(tags: list) -> models.QuerySet:
-        return Post.objects.filter(posttagrelations__tag__in=tags)
-
-    class Meta:
-        db_table = 'tag'
-
-
-class PostTagRelations(models.Model):
-    id = models.AutoField(db_column='ID', primary_key=True)
-    post = models.ForeignKey(Post, db_column='POST', on_delete=models.CASCADE)
-    tag = models.ForeignKey(Tag, db_column='TAG', on_delete=models.CASCADE)
-
-    class Meta:
-        db_table = 'post_tag_relations'
-        unique_together = ('tag', 'post')
+# class Tag(models.Model):
+#     id = models.AutoField(db_column='ID', primary_key=True)
+#     name = models.CharField(db_column='NAME', max_length=255)
+#
+#     @property
+#     def all_tag_posts(self) -> models.QuerySet:
+#         return Post.objects.filter(posttagrelations__tag=self)
+#
+#     @staticmethod
+#     def all_tags_posts(tags: list) -> models.QuerySet:
+#         return Post.objects.filter(posttagrelations__tag__in=tags)
+#
+#     class Meta:
+#         db_table = 'tag'
+#
+#
+# class PostTagRelations(models.Model):
+#     id = models.AutoField(db_column='ID', primary_key=True)
+#     post = models.ForeignKey(Post, db_column='POST', on_delete=models.CASCADE)
+#     tag = models.ForeignKey(Tag, db_column='TAG', on_delete=models.CASCADE)
+#
+#     class Meta:
+#         db_table = 'post_tag_relations'
+#         unique_together = ('tag', 'post')
 
 
 class Like(models.Model):

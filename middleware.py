@@ -4,6 +4,9 @@ from user.models import User
 
 
 class LastActivityTraceMiddleware:
+    """
+    Set last user's request time
+    """
     def __init__(self, get_response):
         self.get_response = get_response
 
@@ -12,6 +15,6 @@ class LastActivityTraceMiddleware:
 
         member: User = request.user
         if member.is_authenticated:
-            member.last_active = timezone.now()
+            member.last_activity = timezone.now()
             member.save()
         return response

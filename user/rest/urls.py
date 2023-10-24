@@ -1,6 +1,8 @@
-from django.urls import path
-from user.rest import views
+from rest_framework import routers
 
-urlpatterns = [
-    path('signup', views.UserCreate.as_view())
-]
+from user.rest.views import UserCreate
+
+user_router = routers.SimpleRouter()
+user_router.register(r'users', UserCreate)
+
+urlpatterns = user_router.urls

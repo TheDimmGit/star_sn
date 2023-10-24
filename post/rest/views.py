@@ -1,10 +1,16 @@
-from django.shortcuts import render
-from rest_framework import viewsets, status
+from datetime import datetime, timedelta
+
+from django.core.exceptions import ValidationError
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import status, viewsets
+from rest_framework.decorators import action
+from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.decorators import action
+from rest_framework.views import APIView
 
-from post.models import Post, Like
+from post.models import Like, Post
+from post.rest.filters import PostFilter
 from post.rest.serializers import PostSerializer
 
 
@@ -63,6 +69,8 @@ class GenericViewSet(viewsets.ModelViewSet):
 
 
 class PostView(GenericViewSet):
+    filter_backends = (DjangoFilterBackend, OrderingFilter)
+    filterset_class = PostFilter
     request_serializer_class = PostSerializer
     response_serializer_class = PostSerializer
     queryset = Post.objects.all()
@@ -89,3 +97,25 @@ class PostView(GenericViewSet):
             Like.objects.create(post=post, author_id=user)
 
         return Response(status=status.HTTP_200_OK)
+
+
+class AnalyticsView(APIView):
+
+    def get(self, request):
+        # Такое лучше сделать через django-filter (как для постов),
+        # но в данном случае фильровать кверисет лайков будет странно,
+        # потому что мы не возвращаем инстансы лайков.
+
+        try:
+            date_from = request.GET.get('date_from', datetime.now() - timedelta(days=7))
+            date_to = request.GET.get('date_to', datetime.now())
+
+            likes = Like.objects.filter(date__range=[date_from, date_to]).count()
+            posts = Post.objects.filter(date__range=[date_from, date_to]).count()
+            result = {
+                'total_likes': likes,
+                'total_posts': posts
+            }
+            return Response(result, status=status.HTTP_200_OK)
+        except ValidationError:
+            return Response({'error_message': 'Invalid date'}, status=status.HTTP_400_BAD_REQUEST)

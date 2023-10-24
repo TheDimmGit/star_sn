@@ -1,0 +1,12 @@
+[flake8]
+ignore =
+    # E501: line length
+    E501
+max-line-length = 100
+extend-ignore = W291,W293,W503,E265,E262,E261
+exclude =
+    venv
+    src
+    migrations
+    tests
+    tests.py
