@@ -2,6 +2,18 @@
 
 star_sn is a backend python based service to perform basic social network operations
 
+## Routing
+- POST /user/users/ (Creates new user)
+- GET /user/users/ (User activity endpoint which shows when user was login last time and when he made last request to the service)
+- POST /api/token/ (User login & new JWT token generation) (Token is required to make post related requests)
+______
+- GET /post/posts/ (Get all existing posts)
+- POST /post/posts/ (Create a post with 'title' and 'content' fields in request body)
+- GET /post/posts/{post_id}/ (Get spesific post) (Same with PUT, PATCH, DELETE. Only owner can change/delete post)
+- GET /post/posts/?date_from=YYY-MM-DD&date_to=YYY-MM-DD (Get existing posts within 'date_from - date_to' interval)
+- GET /post/analytics/?date_from=YYY-MM-DD&date_to=YYY-MM-DD (Returns likes and posts within 'date_from - date_to' interval.
+  Returns all likes and posts if send without parameters)
+- GET post/posts/{post_id}/like (Likes the post) (Make same request to unlike a post)
 
 ## Getting started with social network api
 
