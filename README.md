@@ -29,3 +29,5 @@ Spinning up
 ```
 docker-compose up star-sn
 ```
+
+### (optional )Run bot.py to fill database with users and posts after spinnig up the container
