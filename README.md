@@ -5,6 +5,8 @@ star_sn is a backend python based service to perform basic social network operat
 ## Routing
 - POST /user/users/ (Creates new user)
 - GET /user/users/ (User activity endpoint which shows when user was login last time and when he made last request to the service)
+- GET /user/users/{id} (Get short info about user)
+- GET /user/users/{id}/detail/ (Get detailed info about user including last_activity and last_login fields)
 - POST /api/token/ (User login & new JWT token generation) (Token is required to make post related requests)
 ______
 - GET /post/posts/ (Get all existing posts)
